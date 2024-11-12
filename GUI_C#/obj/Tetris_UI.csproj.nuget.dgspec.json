@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\aki31\\OneDrive\\ドキュメント\\urris_AI\\GUI_C#\\Tetris_UI.csproj": {}
+    "C:\\urrisProject\\GUI_C#\\Tetris_UI.csproj": {}
   },
   "projects": {
-    "C:\\Users\\aki31\\OneDrive\\ドキュメント\\urris_AI\\GUI_C#\\Tetris_UI.csproj": {
+    "C:\\urrisProject\\GUI_C#\\Tetris_UI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\aki31\\OneDrive\\ドキュメント\\urris_AI\\GUI_C#\\Tetris_UI.csproj",
+        "projectUniqueName": "C:\\urrisProject\\GUI_C#\\Tetris_UI.csproj",
         "projectName": "Tetris_UI",
-        "projectPath": "C:\\Users\\aki31\\OneDrive\\ドキュメント\\urris_AI\\GUI_C#\\Tetris_UI.csproj",
+        "projectPath": "C:\\urrisProject\\GUI_C#\\Tetris_UI.csproj",
         "packagesPath": "C:\\Users\\aki31\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\aki31\\OneDrive\\ドキュメント\\urris_AI\\GUI_C#\\obj\\",
+        "outputPath": "C:\\urrisProject\\GUI_C#\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\aki31\\AppData\\Roaming\\NuGet\\NuGet.Config"

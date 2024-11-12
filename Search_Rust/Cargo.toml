@@ -1,19 +1,16 @@
 
 [package]
-build = "build.rs"
-name = "Search_Rust"
+name = "search_rust"
 version = "0.1.0"
-edition = "2021"
-
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
+edition = "2018"
+#[lib]
+#crate-type = ["cdylib"]
 [dependencies]
+ndarray = "0.16.1"
+winapi = { version = "0.3", features = ["winuser"] }
+widestring = "1.1.0"
+eframe = "0.29.1" 
+iced ="0.13.1"
 
-[lib]
-crate-type = ["cdylib"]
-name = "csbindgenhandson"
-
-[build-dependencies]
-csbindgen = "1.9.3"
-bindgen = "0.70"
-
+[package.metadata.winapi]
+subsystem = "windows"

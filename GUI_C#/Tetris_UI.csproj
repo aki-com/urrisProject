@@ -17,10 +17,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Update="lib/TetrisLogic.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <ProjectReference Include="..\Search_Rust\src\Csbindgen_FFI\Csbindgen_FFI.csproj" />
+  
   </ItemGroup>
 
 </Project>

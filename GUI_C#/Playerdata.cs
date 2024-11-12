@@ -1,5 +1,5 @@
     using System;
-    using System.IO.MemoryMappedFiles;
+
     using System.Runtime.InteropServices;
     using System.Security.Cryptography.X509Certificates;
     using System.Windows.Forms;
@@ -28,9 +28,13 @@
         public static extern IntPtr Field_Read(IntPtr ptr);
         [DllImport("tetrisLogic.dll", CallingConvention = CallingConvention.Cdecl)]
         public static extern IntPtr Next_Read(IntPtr ptr);
+        [DllImport("search_rust.dll", CallingConvention = CallingConvention.Cdecl)]
+        public static extern IntPtr field_rust(IntPtr ptr);
+        [DllImport("search_rust.dll", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void show_message_box(); 
         public TetrisPlayer(int i)
         {
-            
+            show_message_box();
             Instance = CreateTetrisGame();
             fieldPtr = Field_Read(Instance);
             NextPtr = Next_Read(Instance);
@@ -40,9 +44,12 @@
         }
         public void UpdateField()
         {
+
             NextPtr = Next_Read(Instance);
-            
-            int[] rawData = new int[Columns];
+            Marshal.Copy(NextPtr, NextMino, 0, 5);
+
+            int[] rawData = new int[Columns*Rows];
+
             for (int row = 0; row < Rows; row++)
             {
                 IntPtr rowPtr = Marshal.ReadIntPtr(fieldPtr, row *Columns* IntPtr.Size);
@@ -52,7 +59,13 @@
                     Field[row, col] = rawData[col];
                 }
             }
+        }
+        public void UpdateField_Rust(){
+            NextPtr = Next_Read(Instance);
             Marshal.Copy(NextPtr, NextMino, 0, 5);
+            int[] tempFIeld = new int[Rows * Columns];
+            Marshal.Copy(field_rust(fieldPtr), tempFIeld, 0, Rows * Columns);
+            Buffer.BlockCopy(tempFIeld, 0, Field, 0,  Rows * Columns*sizeof(int));
         }
 
         public int GameStart(){

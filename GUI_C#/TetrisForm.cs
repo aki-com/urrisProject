@@ -58,6 +58,7 @@ namespace Tetris_UI
             foreach (var player in players)
             {
                 Task.Run(() => player.GameStart());
+                
             }
         }
 

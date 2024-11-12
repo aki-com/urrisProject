@@ -28,7 +28,7 @@ int Tetris_Game::tetris_run() {
         if (time(NULL) != t) {
             t = time(NULL);
             field_update();
-            display();
+            //display();
             if (isHit(minoX, minoY + 1, currentMino)) {
                 WriteField(field_in); resetMino();
                 if (isHit(minoX, minoY, currentMino)) {
@@ -173,9 +173,9 @@ void Tetris_Game::display(){
     }
 
 }
-
+/*
 int main(){
     Tetris_Game tetris= Tetris_Game();
     tetris.tetris_run();
     return 0;
-}
+}*/

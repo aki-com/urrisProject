@@ -1,0 +1,8 @@
+[
+    {
+        "key": "F5",
+        "command": "workbench.action.tasks.runTask",
+        "args": "Build TetrisLogic DLL"
+    }
+]
+    

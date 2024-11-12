@@ -117,13 +117,4 @@ extern "C"{
         return tetris->NextMino.data();
     }
 }
-
-extern "C" __declspec(dllexport) int GetData(int, int);
-
-
-
-int GetData(int a, int b)
-{
-	return a + b;
-}
 #endif // TETRISLGIC_H
