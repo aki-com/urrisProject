@@ -1,7 +1,8 @@
-use iced::{
-    Application,Element, executor, Length, Color, Background
+/*use iced::{
+    Application, Element, executor, Length, Color, Background
 };
-use iced::widget::{Column, Row, Container};
+use iced::widget::{Column, Row, Container, Text};
+use iced::command::Command;
 
 struct TetrisApp {
     field: Vec<Vec<u8>>,  // 0: 空, 1: ブロック
@@ -66,3 +67,4 @@ impl Application for TetrisApp {
 fn main() {
     TetrisApp::run(iced::Settings::default());
 }
+*/

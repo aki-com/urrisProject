@@ -1,0 +1,8 @@
+Search_Rust/target/
+system_C++/TetrisLogic.dll
+GUI_C#/exe/
+GUI_C#/obj/
+GUI_C#/lib/
+GUI_C#/bin/
+!AI_Python/main.py
+AI_Python/
