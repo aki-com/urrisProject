@@ -6,11 +6,6 @@ edition = "2018"
 #[lib]
 #crate-type = ["cdylib"]
 [dependencies]
-ndarray = "0.16.1"
-winapi = { version = "0.3", features = ["winuser"] }
-widestring = "1.1.0"
-eframe = "0.29.1" 
-iced ="0.13.1"
 
-[package.metadata.winapi]
-subsystem = "windows"
+
+                                                                                                        

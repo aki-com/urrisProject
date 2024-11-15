@@ -5,7 +5,7 @@
 cd tetris_cpp
 g++ -shared -o TetrisLogic.dll -O3 TetrisLogic.cpp -I"C:/CppLib"
 */
-// ŠÖ”éŒ¾
+// ï¿½Öï¿½ï¿½éŒ¾
 Tetris_Game::Tetris_Game(){
 
     initializeField(); 
@@ -32,7 +32,7 @@ int Tetris_Game::tetris_run() {
             if (isHit(minoX, minoY + 1, currentMino)) {
                 WriteField(field_in); resetMino();
                 if (isHit(minoX, minoY, currentMino)) {
-                    // ƒQ[ƒ€ƒI[ƒo[ˆ—
+                    // ï¿½Qï¿½[ï¿½ï¿½ï¿½Iï¿½[ï¿½oï¿½[ï¿½ï¿½ï¿½ï¿½
                     std::cout << "Game Over!" << std::endl;
                     break;
                 }
@@ -61,9 +61,9 @@ void Tetris_Game::moveMino(int direction) {
 bool Tetris_Game::initializeField() {
     SetConsoleTitle(TEXT("tetris"));
     field_in = field_out = Eigen::MatrixXi::Zero(FIELD_H_in, FIELD_W_in);
-    field_in.block(0, 0, FIELD_H_in, FIELD_WALL).setOnes(); // ¶‘¤‚Ì•Ç
-    field_in.block(0, FIELD_W_in - FIELD_WALL, FIELD_H_in, FIELD_WALL).setOnes(); // ‰E‘¤‚Ì•Ç
-    field_in.bottomRows(FIELD_WALL).setOnes(); // ’ê‚Ì•Ç
+    field_in.block(0, 0, FIELD_H_in, FIELD_WALL).setOnes(); // ï¿½ï¿½ï¿½ï¿½ï¿½Ì•ï¿½
+    field_in.block(0, FIELD_W_in - FIELD_WALL, FIELD_H_in, FIELD_WALL).setOnes(); // ï¿½Eï¿½ï¿½ï¿½Ì•ï¿½
+    field_in.bottomRows(FIELD_WALL).setOnes(); // ï¿½ï¿½Ì•ï¿½
     field_read();
 
     return true;
@@ -79,7 +79,8 @@ void Tetris_Game::resetMino() {
 }
 
 void Tetris_Game::generateMinoBag() {
-    std::random_shuffle(minoBag.begin(), minoBag.end());
+    std::mt19937 g(t);
+    std::shuffle(minoBag.begin(), minoBag.end(),g);
     NextMino.insert(NextMino.end(),minoBag.begin(), minoBag.end());
 }
 
