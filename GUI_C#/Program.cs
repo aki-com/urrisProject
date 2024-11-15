@@ -6,7 +6,7 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 
 /*
-dotnet publish -r win-x64 -c Release --self-contained true   --output 実行 
+dotnet publish -r win-x64 -c Release --self-contained true   --output release 
 */
 
 namespace Tetris_UI

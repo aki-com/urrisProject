@@ -3,11 +3,8 @@ import tkinter as tk
 from tkinter import Canvas
 #nuitka --standalone --enable-plugin=tk-inter --windows-console-mode=disable --onefile main.py
 
-# RustのDLLを読み込みます（DLLのパスを適宜指定してください）
-Dll=ctypes.CDLL("../Search_Rust/target/debug/search_rust.dll")
-# DLLから配列を取得する関数の設定
-Dll.get_array.restype = ctypes.POINTER(ctypes.c_int)
-Dll.get_array.argtypes = []
+DLL = ctypes.CDLL("SearchRust.dll")
+
 
 # フィールドのサイズ
 FIELD_WIDTH = 10
@@ -33,12 +30,7 @@ def display_field():
         for x in range(FIELD_WIDTH):
             value = field_data[y * FIELD_WIDTH + x]
             color = "black" if value == 0 else "blue"
-            canvas.create_rectangle(
-                x * CELL_SIZE, y * CELL_SIZE,
-                (x + 1) * CELL_SIZE, (y + 1) * CELL_SIZE,
-                fill=color
-            )
-    
+
     root.after(500, display_field)
 
 # フィールドの表示を初期化

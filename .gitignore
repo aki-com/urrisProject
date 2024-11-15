@@ -6,3 +6,6 @@ GUI_C#/lib/
 GUI_C#/bin/
 !AI_Python/main.py
 AI_Python/
+aaa/
+*.dll
+
