@@ -2690,3 +2690,5 @@ C:\Users\aki31\Documents\project\urrisProject\GUI_C#\obj\Release\net9.0-windows\
 C:\Users\aki31\Documents\project\urrisProject\GUI_C#\obj\Release\net9.0-windows\win-x64\refint\Tetris_UI.dll
 C:\Users\aki31\Documents\project\urrisProject\GUI_C#\obj\Release\net9.0-windows\win-x64\Tetris_UI.genruntimeconfig.cache
 C:\Users\aki31\Documents\project\urrisProject\GUI_C#\obj\Release\net9.0-windows\win-x64\ref\Tetris_UI.dll
+C:\Users\aki31\Documents\project\urrisProject\GUI_C#\bin\Release\net9.0-windows\win-x64\RGiesecke.DllExport.Metadata.dll
+C:\Users\aki31\Documents\project\urrisProject\GUI_C#\obj\Release\net9.0-windows\win-x64\Tetris_UI.csproj.AssemblyReference.cache

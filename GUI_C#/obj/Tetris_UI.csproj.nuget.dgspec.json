@@ -53,6 +53,10 @@
               "target": "Package",
               "version": "[9.0.0, )",
               "autoReferenced": true
+            },
+            "UnmanagedExports": {
+              "target": "Package",
+              "version": "[1.2.7, )"
             }
           },
           "imports": [

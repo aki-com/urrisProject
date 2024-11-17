@@ -1,6 +1,6 @@
 Search_Rust/target/
 system_C++/TetrisLogic.dll
-GUI_C#/exe/
+GUI_C#/release/
 GUI_C#/obj/
 GUI_C#/lib/
 GUI_C#/bin/
@@ -8,4 +8,4 @@ GUI_C#/bin/
 AI_Python/
 aaa/
 *.dll
-
+gomi/

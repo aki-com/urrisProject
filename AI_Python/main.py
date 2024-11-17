@@ -16,7 +16,7 @@ root = tk.Tk()
 root.title("Tetris Field")
 canvas = Canvas(root, width=FIELD_WIDTH * CELL_SIZE, height=FIELD_HEIGHT * CELL_SIZE)
 canvas.pack()
-
+Dll = ctypes.CDLL("Tetrislogic.Dll")
 
 
 # 配列を取得してGUI上に描画

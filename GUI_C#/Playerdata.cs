@@ -1,12 +1,13 @@
     using System;
 
     using System.Runtime.InteropServices;
+    using RGiesecke.DllExport;
     using System.Security.Cryptography.X509Certificates;
     using System.Windows.Forms;
 
     public class TetrisPlayer
     {
-        IntPtr Instance;
+        static IntPtr Instance;
         IntPtr fieldPtr;
         IntPtr NextPtr;
         const int Columns = 10; // カラム数
@@ -28,6 +29,16 @@
         public static extern IntPtr Field_Read(IntPtr ptr);
         [DllImport("tetrisLogic.dll", CallingConvention = CallingConvention.Cdecl)]
         public static extern IntPtr Next_Read(IntPtr ptr);
+        [DllExport("GetInstancePointer", CallingConvention = CallingConvention.Cdecl)]
+        public static IntPtr GetInstancePointer()
+        {
+            // C++のCreateTetrisGameから取得したポインタを返す
+            if (Instance == IntPtr.Zero)
+            {
+                Instance = CreateTetrisGame();
+            }
+            return Instance;
+        }
 
         public TetrisPlayer(int i)
         {

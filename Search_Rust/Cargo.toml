@@ -3,9 +3,12 @@
 name = "search_rust"
 version = "0.1.0"
 edition = "2018"
-#[lib]
-#crate-type = ["cdylib"]
+[[bin]]
+name = "search_rust_app"  # バイナリ名を一意に変更
+path = "src/main.rs"
+[lib]
+crate-type = ["cdylib"]
 [dependencies]
 
-
-                                                                                                        
+windows = { version = "0.58.0", features = ["Win32_Foundation", "Win32_System_Diagnostics_ToolHelp", "Win32_System_Memory", "Win32_System_Threading"] }
+read-process-memory = "0.1.6"
