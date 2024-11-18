@@ -1,2 +1,0 @@
-C:\Users\aki31\OneDrive\ドキュメント\urris_AI\DLL用\Tetris_UI\bin\Release\netcoreapp3.1\win-x64\publish\aaaaa\Tetris_UI.pdb
-C:\Users\aki31\OneDrive\ドキュメント\urris_AI\DLL用\Tetris_UI\bin\Release\netcoreapp3.1\win-x64\publish\aaaaa\Tetris_UI.exe
