@@ -20,7 +20,7 @@ pub struct ProcessRead {
     process_name: String,
     pid: u32,
     base_address: usize,
-    handle: ProcessHandle
+    pub handle: ProcessHandle
 }
 
 
@@ -34,6 +34,7 @@ impl ProcessRead {
             let mut buffer = [0u8; std::mem::size_of::<usize>()];
             current_address += offset;
             self.handle.copy_address(current_address, &mut buffer)?;
+            println!("{:X}", current_address);
             current_address = usize::from_ne_bytes(buffer);
         }
         Ok(current_address)

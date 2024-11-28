@@ -5,8 +5,8 @@
 cd tetris_cpp
 g++ -shared -o TetrisLogic.dll -O3 TetrisLogic.cpp -I"C:/CppLib"
 */
-// �֐��錾
-Tetris_Game::Tetris_Game(){
+    // �֐��錾
+    Tetris_Game::Tetris_Game(){
 
     initializeField(); 
     minoBag = {0,1,2,3,4,5,6};
