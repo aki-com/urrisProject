@@ -1,14 +1,13 @@
-mod tetris_pointer;
+
+#![feature(portable_simd)]
+mod tetris;
+
 
 
 fn main() {
-    let player = tetris_pointer::new(1);
-    let field = player.field_read();
-    for element in &field {
-        println!("aaaaa");
-        println!("{:?}", element);
-    }
-    
-}   
-
-
+    let player = tetris::new(1);
+    let field = player.read();
+    println!("{:?}", field.map(|val| format!("{:016b}", val)));
+    let search_result = player.search(field);
+    println!("{:?}", search_result.map(|val| format!("{:016b}", val)));
+}

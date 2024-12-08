@@ -2,7 +2,7 @@
 #pragma GCC optimize("unroll-loops")
 #include "tetrisLogic.hpp"
 /*
-cd tetris_cpp
+cd system_C++
 g++ -shared -o TetrisLogic.dll -O3 TetrisLogic.cpp -I"C:/CppLib"
 */
     // �֐��錾
@@ -25,6 +25,7 @@ int Tetris_Game::tetris_run() {
         if (_kbhit()) {
             moveMino(_getch());
         }
+        if (isPaused) continue; 
         if (time(NULL) != t) {
             t = time(NULL);
             field_update();
@@ -46,6 +47,11 @@ int Tetris_Game::tetris_run() {
 }
 
 void Tetris_Game::moveMino(int direction) {
+        if (direction == 0x50) { // 'P'キーで一時停止をトグル
+        isPaused = !isPaused;
+        return;
+    }
+    if (isPaused) return;
     switch (direction) {
         case VK_UP:    hardDrop(); WriteField(field_in); resetMino();      break;
         case VK_DOWN:  if (!isHit(minoX, minoY + 1, currentMino)) minoY++; break;

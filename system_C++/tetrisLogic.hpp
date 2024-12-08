@@ -78,6 +78,7 @@ class Tetris_Game{
         int bagIndex;
         int holdMinoType;
         bool holdUsed;
+        bool isPaused;
 
 
 

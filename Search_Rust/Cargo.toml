@@ -8,6 +8,8 @@ name = "search_rust_app"  # バイナリ名を一意に変更
 path = "src/main.rs"
 [lib]
 crate-type = ["cdylib"]
+[features]
+portable_simd = []
 [dependencies]
 
 windows = { version = "0.58.0", features = [
@@ -16,4 +18,10 @@ windows = { version = "0.58.0", features = [
     "Win32_System_Memory",
     "Win32_System_Threading"
     ]}
+
 read-process-memory = "0.1.6"
+bytemuck = "1.20.0"
+sysinfo = "0.33.0"
+bit-matrix = "0.8.1"
+bit_field = "0.10.2"
+
