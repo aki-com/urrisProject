@@ -7,7 +7,7 @@ edition = "2018"
 name = "search_rust_app"  # バイナリ名を一意に変更
 path = "src/main.rs"
 [lib]
-crate-type = ["cdylib"]
+
 [features]
 portable_simd = []
 [dependencies]

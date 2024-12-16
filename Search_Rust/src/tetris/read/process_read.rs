@@ -9,8 +9,12 @@ use sysinfo::System;
 
 pub fn new(target_process_name: &str) -> ProcessRead {
     let pid = get_process_id(target_process_name).unwrap();
+
     let base_address = get_base_address(pid, target_process_name).unwrap() as usize;
+
     let handle = get_handle(pid).unwrap();
+
+
 
     ProcessRead {
         process_name: target_process_name.to_string(),
@@ -20,7 +24,7 @@ pub fn new(target_process_name: &str) -> ProcessRead {
     }
 }
 
-#[allow(dead_code)]
+
 pub struct ProcessRead {
 
     process_name: String,
@@ -35,7 +39,7 @@ impl ProcessRead {
 
     pub fn read_memory_chain(&self, offsets: &[usize]) -> io::Result<usize> {
         let mut current_address =  self.base_address;
-    
+    /*
         for &offset in offsets {
             let mut buffer = [0u8; std::mem::size_of::<usize>()];
             current_address += offset;
@@ -43,10 +47,16 @@ impl ProcessRead {
             self.handle.copy_address(current_address, &mut buffer)?;
             
             current_address = usize::from_ne_bytes(buffer);
+            println!("{:X}", current_address);
+        }*/
+        for &offset in offsets {
+            let mut buffer = [0u8; std::mem::size_of::<usize>()];
+            self.handle.copy_address(current_address+offset, &mut buffer)?;
+            current_address = usize::from_ne_bytes(buffer);
         }
         Ok(current_address)
     }
-    pub fn read_memory<T: Pod>(&self, destination: &mut T, address: usize) -> io::Result<()> {
+    pub fn read_memory_list<T: Pod>(&self, destination: &mut T, address: usize) -> io::Result<()> {
 
         let buffer = bytes_of_mut(destination);
         self.handle.copy_address(address, buffer)?;
@@ -56,7 +66,9 @@ impl ProcessRead {
 }
 
 fn get_process_id(target_process_name: &str) -> Option<u32> {
+    let start = std::time::Instant::now();
     let system = System::new_all();
+    println!("Time elapsed: {:?}", start.elapsed());
     for (pid, process) in system.processes() {
         if process.name() == target_process_name {
             return Some(pid.as_u32());
