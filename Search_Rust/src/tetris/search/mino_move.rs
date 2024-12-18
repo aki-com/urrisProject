@@ -1,9 +1,11 @@
-use crate::mino_def::{Mino, PlayData, MINO};
+use crate::mino_def::{PlayData, MINO};
 
 pub fn calculate_state(data:PlayData) -> [u16; 20] {
-    let mut new_field: [u16; 20] = [0;20];
-    add(data.field, MINO[data.mino.shape as usize][data.mino.angle as usize]);
-    new_field
+    let mut mino_field: [u16; 20] = MINO[data.mino.shape as usize][data.mino.angle as usize];
+    mino_field = right_and_left(mino_field, data.mino.x);
+    mino_field = down(mino_field, data.mino.y);
+    println!("{:?}",data.mino);
+    add(data.field, mino_field)
 }
 
 
@@ -15,20 +17,27 @@ pub fn add(mino_f:[u16;20],state_f:[u16;20]) -> [u16; 20] {
     new_field
 }
 
-pub struct State;
-impl State {
-    pub fn left(data:Mino) -> [u16; 20] {
-        let mut new_mino = MINO[data.shape as usize][data.angle as usize];
-        for i in 0..20 {
-            new_mino[i] = new_mino[i] << data.x-6;
-        }
-        new_mino
+pub fn right_and_left(mino_f: [u16; 20], x: u32) -> [u16; 20] {
+    let move_x = 6 - x as i8;
+    if move_x == 0 {
+        return mino_f;
     }
-    pub fn right(data:Mino) -> [u16; 20] {
-        let mut new_mino = MINO[data.shape as usize][data.angle as usize];
-        for i in 0..20 {
-            new_mino[i] = new_mino[i] >> data.x-6;
+
+    let mut new_mino = mino_f;
+    if move_x > 0 {
+        for value in &mut new_mino {
+            *value <<= move_x as u8;
         }
-        new_mino
+    } else {
+        for value in &mut new_mino {
+            *value >>= -move_x as u8;
+        }
     }
+    new_mino
+}
+
+pub fn down(mino_f:[u16;20],y:u32) -> [u16; 20] {
+    let mut new_mino = mino_f;
+    new_mino.rotate_right((y-1) as usize);
+    new_mino
 }

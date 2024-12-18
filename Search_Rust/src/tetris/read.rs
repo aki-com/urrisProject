@@ -30,7 +30,7 @@ impl PtrData {
 
     pub fn new() -> PtrData {
         let app_option = process_read::new("Tetris_UI.exe");
-        //let offsets = vec![0x007E9000, 0x0, 0xE0, 0x1F0, 0x58, 0x0];//自ミノ込み
+        //let field_offsets = vec![0x007E9000, 0x0, 0xE0, 0x1F0, 0x58, 0x0];//自ミノ込み
         let field_offsets = vec![0x007E3960,0x40,0x20,0x8,0x18,0x0,0x0];
         let nimo_offsets = vec![0x007DFD40,0xCC8,0x38];
         let field_ptr = app_option.read_memory_chain(&field_offsets).unwrap();

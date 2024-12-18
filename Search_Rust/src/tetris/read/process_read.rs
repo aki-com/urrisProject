@@ -39,16 +39,6 @@ impl ProcessRead {
 
     pub fn read_memory_chain(&self, offsets: &[usize]) -> io::Result<usize> {
         let mut current_address =  self.base_address;
-    /*
-        for &offset in offsets {
-            let mut buffer = [0u8; std::mem::size_of::<usize>()];
-            current_address += offset;
-
-            self.handle.copy_address(current_address, &mut buffer)?;
-            
-            current_address = usize::from_ne_bytes(buffer);
-            println!("{:X}", current_address);
-        }*/
         for &offset in offsets {
             let mut buffer = [0u8; std::mem::size_of::<usize>()];
             self.handle.copy_address(current_address+offset, &mut buffer)?;
@@ -66,9 +56,7 @@ impl ProcessRead {
 }
 
 fn get_process_id(target_process_name: &str) -> Option<u32> {
-    let start = std::time::Instant::now();
     let system = System::new_all();
-    println!("Time elapsed: {:?}", start.elapsed());
     for (pid, process) in system.processes() {
         if process.name() == target_process_name {
             return Some(pid.as_u32());

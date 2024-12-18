@@ -33,10 +33,6 @@ impl Player {
     }
     pub fn read(&self) -> PlayData {
         let rew_field = self.ptr_data.field_read16();
-        for i in 0..20 {
-            println!("{:?}", rew_field[i]);
-            
-        }
         let field = field_bitmask16(rew_field);
         let mino = self.ptr_data.mino_read();
         PlayData {
