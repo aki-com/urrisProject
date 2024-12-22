@@ -1,4 +1,4 @@
-
+use std::simd::{u32x16,prelude::*};
 use std::convert::TryInto;
 mod process_read;
 
@@ -10,15 +10,16 @@ pub struct PtrData {
 
 
 impl PtrData {
-    pub fn field_read16(&self) -> [[u32; 16]; 20] {
-        let mut field_raw: [u32; 512] = [0; 512];
-        let mut field: [[u32; 16]; 20] = [[0; 16]; 20];
+    pub fn field_read16(&self) -> u16x32 {
+        let mut field_raw = [0; 512];
+        let mut field= [[0; 16]; 32];
         self.app_option.read_memory_list::<[u32; 512]>(&mut field_raw, self.field_ptr).unwrap();
-        for i in 0..20 {
+        for i in 0..32 {
             let row = &field_raw[i*16..(i+1)*16];
             field[i] = row.try_into().unwrap();
+
         }   
-        field
+        field_bitmask16(field)
 
     }
     pub fn mino_read(&self) -> [u32; 4] {
@@ -34,7 +35,7 @@ impl PtrData {
         let field_offsets = vec![0x007E3960,0x40,0x20,0x8,0x18,0x0,0x0];
         let nimo_offsets = vec![0x007DFD40,0xCC8,0x38];
         let field_ptr = app_option.read_memory_chain(&field_offsets).unwrap();
-        let mino_ptr = app_option.read_memory_chain(&nimo_offsets).unwrap()+0x660;
+        let mino_ptr = app_option.read_memory_chain(&nimo_offsets).unwrap()+0x930;
         
 
         PtrData {
@@ -43,4 +44,15 @@ impl PtrData {
             app_option
         }
     }
+}
+pub fn field_bitmask16(field: [[u32; 16]; 32]) -> u16x32 {
+    let mut bitmask = u16x32::splat(0);
+
+    for (row_idx, row) in field.iter().enumerate() {
+            let row_simd = u32x16::from_array(*row).reverse();
+            let mask = !row_simd.simd_eq(u32x16::splat(0)).to_bitmask() as u16;
+            bitmask[row_idx] = mask;
+    }
+
+    bitmask
 }

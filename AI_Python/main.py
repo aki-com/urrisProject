@@ -1,6 +1,16 @@
 import ctypes
 import tkinter as tk
 from tkinter import Canvas
+from search_rust import *
+import numpy as np
+
+
+
+
+a =Search()
+print(a)
+# Rustのコードをコンパイル
+
 #nuitka --standalone --enable-plugin=tk-inter --windows-console-mode=disable --onefile main.py
 
 DLL = ctypes.CDLL("SearchRust.dll")

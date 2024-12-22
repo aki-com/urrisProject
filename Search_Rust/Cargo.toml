@@ -1,13 +1,17 @@
 
 [package]
 name = "search_rust"
-version = "0.1.0"
+version = "0.1.2"
 edition = "2018"
 [[bin]]
 name = "search_rust_app"  # バイナリ名を一意に変更
 path = "src/main.rs"
-[lib]
+[profile.release]
+debug = true
 
+[lib]
+name = "search_rust"
+crate-type = ["cdylib"]
 [features]
 portable_simd = []
 [dependencies]
@@ -20,8 +24,15 @@ windows = { version = "0.58.0", features = [
     ]}
 
 read-process-memory = "0.1.6"
-bytemuck = "1.20.0"
-sysinfo = "0.33.0"
-bit-matrix = "0.8.1"
-bit_field = "0.10.2"
+bytemuck            = "1.21.0"
+sysinfo             = "0.33.0"
+bit-matrix          = "0.8.1"
+bit_field           = "0.10.2"
+heapless            = "0.8.0"
+fxhash              =  "0.2.1"
+rayon               = "1.10.0"
+
+
+pyo3 = { version = "0.23.3", features = ["extension-module"] }
+numpy = "0.23.0"
 

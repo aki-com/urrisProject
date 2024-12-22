@@ -59,7 +59,7 @@
 
             for (int row = 0; row < Rows; row++)
             {
-                IntPtr rowPtr = Marshal.ReadIntPtr(fieldPtr, row *Columns* IntPtr.Size);
+                IntPtr rowPtr = Marshal.ReadIntPtr(fieldPtr, (row+9) *Columns* IntPtr.Size);
                 Marshal.Copy(rowPtr, rawData, 0, Columns);
                 for (int col = 0; col < Columns; col++)
                 {

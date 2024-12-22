@@ -24,9 +24,7 @@ pub fn new(target_process_name: &str) -> ProcessRead {
     }
 }
 
-
 pub struct ProcessRead {
-
     process_name: String,
     pid: u32,
     base_address: usize,

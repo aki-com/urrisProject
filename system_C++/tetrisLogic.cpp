@@ -79,7 +79,7 @@ void Tetris_Game::resetMino() {
     if (NextMino.size() >= MINO_TYPE) generateMinoBag();
     minoType = NextMino.front();
     NextMino.erase(NextMino.begin());;
-    minoX = 3 + FIELD_WALL, minoY = 0, minoA = 0;
+    minoX = 3 + FIELD_WALL, minoY = 9, minoA = 0;
     currentMino = minoShapes[minoType];
     holdUsed = false; 
 }
@@ -123,7 +123,7 @@ void Tetris_Game::holdMino() {
         resetMino();
     } else {
         std::swap(holdMinoType, minoType);
-        minoX = 5, minoY = 0, minoA = 0;
+        minoX = 6, minoY = 9, minoA = 0;
         currentMino = minoShapes[minoType];
     }
 

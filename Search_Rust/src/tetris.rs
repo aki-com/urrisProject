@@ -1,8 +1,13 @@
-use std::simd::{u32x16,prelude::*};
+use std::time;
+use std::simd::u16x32;
 use crate::mino_def::{PlayData, Mino};
+use heapless::Vec;
+use rayon::prelude::*;
+use search::Search;
 mod read;
 mod search;
 #[allow(dead_code)]
+
 pub struct Player {
     number: u32,
     ptr_data: read::PtrData,
@@ -21,7 +26,7 @@ impl Player {
             number,
             ptr_data: read::PtrData::new(),
             play_data: PlayData {
-                field: [0; 20],
+                field: u16x32::splat(0),
                 mino: Mino {
                     shape: 0,
                     x: 0,
@@ -32,8 +37,7 @@ impl Player {
         }
     }
     pub fn read(&self) -> PlayData {
-        let rew_field = self.ptr_data.field_read16();
-        let field = field_bitmask16(rew_field);
+        let field = self.ptr_data.field_read16();
         let mino = self.ptr_data.mino_read();
         PlayData {
             field,
@@ -46,20 +50,31 @@ impl Player {
         }
             
     }
-    pub fn bfssearch(&self, data:PlayData) -> [u16; 20] {
-        search::Search::search(data)
+    pub fn search(&self, mut data:PlayData) -> Vec<u16x32,256> {
+      /* */
+      println!("{:?}", data.mino);
+      data.mino.y = 20;
+        for (i,f) in data.field.to_array().iter().enumerate() {
+            if *f > 57351 {
+                //for終了
+                
+                println!("{:?}", i);
+                break;  
+            } 
+            else {
+               
+            }
+        }
+        let mut Search =search::Search::new(data);
+        let time = time::Instant::now();
+
+        for _ in 1..2 {
+            Search.bfssearch();
+            
+        }
+        println!("time:{:?}", time.elapsed().as_secs_f64());
+        Search.result.clone()
     }
     
 }
 
-pub fn field_bitmask16(field: [[u32; 16]; 20]) -> [u16; 20] {
-    let mut bitmask = [0u16; 20];
-
-    for (row_idx, row) in field.iter().enumerate() {
-            let row_simd = u32x16::from_array(*row).reverse();
-            let mask = !row_simd.simd_eq(u32x16::splat(0)).to_bitmask();
-            bitmask[row_idx] = mask as u16;
-        }
-
-    bitmask
-}

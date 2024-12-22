@@ -19,7 +19,7 @@
 static const int FIELD_WALL =  3;
 
 static const int FIELD_W_out = 10;
-static const int FIELD_H_out = 20;
+static const int FIELD_H_out = 29;
 static const int FIELD_W_in = FIELD_W_out + (FIELD_WALL * 2);
 static const int FIELD_H_in = FIELD_H_out + FIELD_WALL;
 // 列挙型
