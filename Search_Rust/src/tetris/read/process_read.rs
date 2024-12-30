@@ -1,11 +1,10 @@
-use windows::Win32::System::Diagnostics::ToolHelp::*;
-use read_process_memory::{CopyAddress,ProcessHandle};
+use std::sync::atomic::{AtomicPtr, Ordering};
+use std::ptr;
+use read_process_memory::{CopyAddress, ProcessHandle};
+use std::io;
 use std::convert::TryFrom;
 use bytemuck::{bytes_of_mut, Pod};
-use std::io;
-
 use sysinfo::System;
-
 
 pub fn new(target_process_name: &str) -> ProcessRead {
     let pid = get_process_id(target_process_name).unwrap();
@@ -14,13 +13,12 @@ pub fn new(target_process_name: &str) -> ProcessRead {
 
     let handle = get_handle(pid).unwrap();
 
-
-
+    // AtomicPtr に変換して格納
     ProcessRead {
         process_name: target_process_name.to_string(),
-        pid: pid,
-        base_address: base_address,
-        handle: handle
+        pid,
+        base_address,
+        handle: AtomicPtr::new(Box::into_raw(Box::new(handle))),
     }
 }
 
@@ -28,29 +26,34 @@ pub struct ProcessRead {
     process_name: String,
     pid: u32,
     base_address: usize,
-    handle: ProcessHandle
+    handle: AtomicPtr<ProcessHandle>, // AtomicPtr を使用
 }
 
-
-
 impl ProcessRead {
-
     pub fn read_memory_chain(&self, offsets: &[usize]) -> io::Result<usize> {
-        let mut current_address =  self.base_address;
+        let mut current_address = self.base_address;
+
         for &offset in offsets {
             let mut buffer = [0u8; std::mem::size_of::<usize>()];
-            self.handle.copy_address(current_address+offset, &mut buffer)?;
+
+            // AtomicPtr から安全に参照を取得
+            let handle = unsafe { &*self.handle.load(Ordering::SeqCst) };
+            handle.copy_address(current_address + offset, &mut buffer)?;
+
             current_address = usize::from_ne_bytes(buffer);
         }
         Ok(current_address)
     }
-    pub fn read_memory_list<T: Pod>(&self, destination: &mut T, address: usize) -> io::Result<()> {
 
+    pub fn read_memory_list<T: Pod>(&self, destination: &mut T, address: usize) -> io::Result<()> {
         let buffer = bytes_of_mut(destination);
-        self.handle.copy_address(address, buffer)?;
+
+        // AtomicPtr から安全に参照を取得
+        let handle = unsafe { &*self.handle.load(Ordering::SeqCst) };
+        handle.copy_address(address, buffer)?;
+
         Ok(())
     }
-
 }
 
 fn get_process_id(target_process_name: &str) -> Option<u32> {
@@ -65,6 +68,7 @@ fn get_process_id(target_process_name: &str) -> Option<u32> {
 }
 
 fn get_base_address(pid: u32, target_module_name: &str) -> Option<*const u8> {
+    use windows::Win32::System::Diagnostics::ToolHelp::*;
     let snapshot = unsafe { CreateToolhelp32Snapshot(TH32CS_SNAPMODULE | TH32CS_SNAPMODULE32, pid).ok()? };
     let mut entry = MODULEENTRY32 {
         dwSize: std::mem::size_of::<MODULEENTRY32>() as u32,
@@ -92,4 +96,3 @@ fn get_handle(pid: u32) -> io::Result<ProcessHandle> {
     let handle = ProcessHandle::try_from(pid)?;
     Ok(handle)
 }
-

@@ -4,8 +4,8 @@ use std::simd::u16x32;
 #[derive(Debug,Clone,Copy,Hash, Eq, PartialEq)]
 pub struct Mino {
     pub shape: u32,
-    pub x: u32,
-    pub y: u32,
+    pub     x: u32,
+    pub     y: u32,
     pub angle: u32,
 }
 #[derive(Debug,Clone,Copy)]

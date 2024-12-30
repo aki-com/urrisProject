@@ -2,18 +2,12 @@ use std::time;
 use std::simd::u16x32;
 use crate::mino_def::{PlayData, Mino};
 use heapless::Vec;
-use rayon::prelude::*;
-use search::Search;
 mod read;
 mod search;
-#[allow(dead_code)]
 
 pub struct Player {
     number: u32,
     ptr_data: read::PtrData,
-    play_data: PlayData
-
-    
 }
 
 
@@ -25,15 +19,7 @@ impl Player {
         Player {
             number,
             ptr_data: read::PtrData::new(),
-            play_data: PlayData {
-                field: u16x32::splat(0),
-                mino: Mino {
-                    shape: 0,
-                    x: 0,
-                    y: 0,
-                    angle: 0
-                }
-            }
+
         }
     }
     pub fn read(&self) -> PlayData {
@@ -65,15 +51,15 @@ impl Player {
                
             }
         }
-        let mut Search =search::Search::new(data);
+        let mut search =search::Search::new(data);
         let time = time::Instant::now();
 
         for _ in 1..2 {
-            Search.bfssearch();
+            search.bfssearch();
             
         }
         println!("time:{:?}", time.elapsed().as_secs_f64());
-        Search.result.clone()
+        search.result.clone()
     }
     
 }
