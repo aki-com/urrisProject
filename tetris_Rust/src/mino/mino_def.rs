@@ -1,32 +1,36 @@
-use std::simd::u16x32;
+use std::simd::{num::SimdUint, u16x32, Simd};
 
 
 #[derive(Debug,Clone,Copy,Hash, Eq, PartialEq)]
+
 pub struct Mino {
-    pub shape: u32,
-    pub     x: u32,
-    pub     y: u32,
-    pub angle: u32,
+   pub shape: u8,
+   pub     x: i8,
+   pub     y: i8,
+   pub angle: u8,
+   pub state: u16x32,
 }
-#[derive(Debug,Clone,Copy)]
-pub struct PlayData {
-   pub field: u16x32,
-   pub mino: Mino,
+impl Mino {
+   pub fn new(shape: u8, x: i8, y: i8, angle: u8) -> Mino {
+      let mut state = MINO[shape as usize][angle as usize];
+
+      Mino {
+         shape,
+         x,
+         y,
+         angle,
+         state,
+      }
+   }
 }
-impl PlayData {
-    pub fn new() -> PlayData {
-        PlayData {
-            field: u16x32::splat(0),
-            mino: Mino {
-                shape: 0,
-                x: 0,
-                y: 0,
-                angle: 0,
-            }
-        }
-    }
-    
+pub enum Move {
+   Left,
+   Right,
+   Down,
+   RotateR,
+   RotateL,
 }
+
 pub const MINO: [[u16x32; 4]; 7] = [
    [
       u16x32::from_array([0,0,0,0,0,0,0,0,0,0,0,0,768,384,  0,  0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]),
@@ -68,3 +72,56 @@ pub const MINO: [[u16x32; 4]; 7] = [
       u16x32::from_array([0,0,0,0,0,0,0,0,0,0,0,0,256,256,256,256,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0])
    ]
 ];
+const WALL_KICK_OFFSETS_I: [[(i8, i8); 5]; 8] = [
+    [(0, 0), (-1, 0), (2, 0), (-1, -2), (2, 1)], // 0 -> 3
+    [(0, 0), (-2, 0), (1, 0), (-2, 1), (1, -2)], // 0 -> 1
+    [(0, 0), (2, 0), (-1, 0), (2, -1), (-1, 2)], // 1 -> 0
+    [(0, 0), (-1, 0), (2, 0), (-1, -2), (2, 1)], // 1 -> 2
+    [(0, 0), (1, 0), (-2, 0), (1, 2), (-2, -1)], // 2 -> 1
+    [(0, 0), (2, 0), (-1, 0), (2, -1), (-1, 2)], // 2 -> 3
+    [(0, 0), (1, 0), (-2, 0), (-2, 1), (1, -2)], // 3 -> 2
+    [(0, 0), (-2, 0), (1, 0), (1, 2), (-2, -1)], // 3 -> 0
+];
+
+const WALL_KICK_OFFSETS: [[(i8, i8); 5]; 8] = [
+    [(0, 0), (1, 0), (1, -1), (0, 2), (1, 2)],    // 0 -> 3
+    [(0, 0), (-1, 0), (-1, -1), (0, 2), (-1, 2)], // 0 -> 1
+    [(0, 0), (1, 0), (1, 1), (0, -2), (1, -2)],   // 1 -> 0
+    [(0, 0), (1, 0), (1, 1), (0, -2), (1, -2)],   // 1 -> 2
+    [(0, 0), (-1, 0), (-1, 1), (0, -2), (-1, -2)],// 2 -> 1
+    [(0, 0), (1, 0), (1, 1), (0, -2), (1, -2)],   // 2 -> 3
+    [(0, 0), (-1, 0), (-1, 1), (0, -2), (-1, -2)], // 3 -> 2
+    [(0, 0), (-2, 0), (-2, 1), (0, -2), (-1, -2)], // 3 -> 0
+];
+
+
+
+pub fn add(mino_f: u16x32, state_f: u16x32) -> Option<u16x32>{
+    if 0 !=(mino_f & state_f).reduce_or() {
+        None
+    }
+    else {
+        Some(mino_f | state_f)
+    }
+
+}
+pub fn rebuild(mino: Mino) -> Mino {
+   let mut new_state = MINO[mino.shape as usize][mino.angle as usize];
+   if mino.x >= 0 {
+      new_state >>= Simd::splat(mino.x as u16);
+   } else {
+      new_state <<= Simd::splat(-mino.x as u16);     
+   }
+   if mino.y >= 0 {
+      for _ in 0..mino.y {
+         new_state = new_state.rotate_elements_right::<1>();
+      }
+   } else {
+      for _ in 0..(-mino.y) {
+         new_state = new_state.rotate_elements_left::<1>();
+      }
+   }
+
+   Mino{state: new_state, ..mino}
+
+}

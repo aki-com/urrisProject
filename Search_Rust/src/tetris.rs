@@ -4,6 +4,9 @@ use crate::mino_def::{PlayData, Mino};
 use heapless::Vec;
 mod read;
 mod search;
+use rayon::prelude::*;
+use rayon::ThreadPoolBuilder; // 追加
+
 
 pub struct Player {
     number: u32,
@@ -51,13 +54,17 @@ impl Player {
                
             }
         }
-        let mut search =search::Search::new(data);
+        let mut search = search::Search::new(data);
         let time = time::Instant::now();
 
-        for _ in 1..2 {
-            search.bfssearch();
-            
-        }
+
+
+                for _ in 1..2 {
+                    search.bfssearch();
+                    
+                }
+
+
         println!("time:{:?}", time.elapsed().as_secs_f64());
         search.result.clone()
     }

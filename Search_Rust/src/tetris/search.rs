@@ -6,22 +6,21 @@ use fxhash::{FxHashMap, FxBuildHasher};
 
 mod mino_move;
 
-
-pub struct Search{
+#[derive(Clone)]pub struct Search{
     pub current: PlayData,
     pub first_field: u16x32,
     pub queue: Vec<Mino, 256>,
     pub result: Vec<u16x32, 256>,
-    pub current_log:Vec<&'static str, 32>,
-    pub unordered_map: FxHashMap<u16x32, Vec<&'static str, 32>>,
+    pub current_log:Vec<String, 32>,
+    pub unordered_map: FxHashMap<u16x32, Vec<String, 32>>,
 }
 impl Search {
     pub fn new(data:PlayData) -> Self {
         let mut queue = Vec::new();
         let    result = Vec::new();
         let mut unordered_map = FxHashMap::with_capacity_and_hasher(256, FxBuildHasher::default());
-        let mut move_log: Vec<&'static str, 32> = Vec::new();
-        move_log.push("S").unwrap();
+        let mut move_log: Vec<String, 32> = Vec::new();
+        move_log.push("S".into()).unwrap();
         let f = calculate_state(data).unwrap();
         unordered_map.insert(f, move_log.clone());
          queue.push(data.mino).unwrap();
@@ -62,7 +61,7 @@ impl Search {
             false
         }
     }
-    pub fn try_move(&mut self, move_char:&'static str) {
+    pub fn try_move(&mut self, move_char:&str) {
         let mut new_state = self.current;
         match move_char {
             "R" => { new_state.mino.x += 1 }
@@ -75,7 +74,7 @@ impl Search {
         if let Some(field) = calculate_state(PlayData {field: self.first_field, mino: new_state.mino}) {
             if !self.unordered_map.contains_key(&field) {
                 let mut move_log = self.current_log.clone();
-                move_log.push(move_char).unwrap();
+                move_log.push(move_char.into()).unwrap();
                 self.unordered_map.insert(field, move_log);
                 self.queue.push(new_state.mino).unwrap();
                 //self.result.push(field).unwrap();
@@ -83,7 +82,7 @@ impl Search {
                 
         }
     }
-    pub fn try_harddrop(&mut self) {
+   fn try_harddrop(&mut self) {
         let mut mino = self.current.mino;
         mino.y += 1;
         if None == calculate_state(PlayData {field: self.first_field, mino}) {

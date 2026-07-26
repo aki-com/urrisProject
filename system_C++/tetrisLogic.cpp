@@ -5,8 +5,8 @@
 cd system_C++
 g++ -shared -o TetrisLogic.dll -O3 TetrisLogic.cpp -I"C:/CppLib"
 */
-    // �֐��錾
-    Tetris_Game::Tetris_Game(){
+// �֐��錾
+Tetris_Game::Tetris_Game(){
 
     initializeField(); 
     minoBag = {0,1,2,3,4,5,6};
@@ -29,7 +29,7 @@ int Tetris_Game::tetris_run() {
         if (time(NULL) != t) {
             t = time(NULL);
             field_update();
-            //display();
+            display();
             if (isHit(minoX, minoY + 1, currentMino)) {
                 WriteField(field_in); resetMino();
                 if (isHit(minoX, minoY, currentMino)) {
@@ -180,9 +180,9 @@ void Tetris_Game::display(){
     }
 
 }
-/*
+
 int main(){
     Tetris_Game tetris= Tetris_Game();
     tetris.tetris_run();
     return 0;
-}*/
+}

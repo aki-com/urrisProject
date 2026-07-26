@@ -1,0 +1,28 @@
+
+import { CheckBox } from "std-widgets.slint";
+export component AppWindow inherits Window {
+    in-out property <[[int]]> field;
+
+    preferred-width: 100%;
+    preferred-height: 100%;
+    min-height: 600px;
+    min-width: 300px;
+
+    // プラットフォーム名
+    Rectangle {
+        border-width: 10px;
+        GridLayout {
+            width: 90%;
+            height: 90%;
+            spacing: 1px;
+
+            for row in field : Row {
+                for col in row : Rectangle {
+                        background: col == 0 ? #553434 : col == 1 ? #FF0000 : col == 2 ? #00FF00 : col == 3 ? #0000FF : col == 4 ? #FFFF00 : col == 5 ? #FF00FF : col == 6 ? #00FFFF : #FFFFFF;
+                    }
+                    
+            }
+        }
+    }
+
+}
